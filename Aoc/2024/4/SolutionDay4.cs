@@ -13,17 +13,35 @@ public class SolutionDay4
         {
             for (int col = 0; col < _data[row].Length; col++)
             {
-                if (SearchHorizontal(row, col, word)) totalCount++;
-                if (SearchVertical(row, col, word)) totalCount++;
-                if (SearchDiagonalDownRight(row, col, word)) totalCount++;
-                if (SearchDiagonalDownLeft(row, col, word)) totalCount++;
-                if (SearchHorizontalBack(row, col, word)) totalCount++;
-                if (SearchVerticalBack(row, col, word)) totalCount++;
-                if (SearchDiagonalUpLeft(row, col, word)) totalCount++;
-                if (SearchDiagonalUpRight(row, col, word)) totalCount++;
+                totalCount += SearchInAllDirections(row, col, word);
             }
         }
         return totalCount;
+    }
+
+    private int SearchInAllDirections(int row, int col, string word)
+    {
+        int count = 0;
+        count += Search(row, col, word, 0, 1); // Horizontal
+        count += Search(row, col, word, 1, 0); // Vertical
+        count += Search(row, col, word, 1, 1); // Diagonal Down Right
+        count += Search(row, col, word, 1, -1); // Diagonal Down Left
+        count += Search(row, col, word, 0, -1); // Horizontal Back
+        count += Search(row, col, word, -1, 0); // Vertical Back
+        count += Search(row, col, word, -1, -1); // Diagonal Up Left
+        count += Search(row, col, word, -1, 1); // Diagonal Up Right
+        return count;
+    }
+
+    private int Search(int startRow, int startCol, string word, int rowIncrement, int colIncrement)
+    {
+        for (int i = 0; i < word.Length; i++)
+        {
+            int newRow = startRow + i * rowIncrement;
+            int newCol = startCol + i * colIncrement;
+            if (!IsValidPosition(newRow, newCol) || _data[newRow][newCol] != word[i]) return 0;
+        }
+        return 1;
     }
 
     public int CountOccurrencesPart2()
@@ -54,44 +72,4 @@ public class SolutionDay4
     }
 
     private bool IsValidPosition(int row, int col) => row >= 0 && row < _data.Length && col >= 0 && col < _data[row].Length; 
-    private bool SearchHorizontal(int startRow, int startCol, string word)
-    {
-        if (startCol + word.Length > _data[startRow].Length) return false; 
-        return !word.Where((t, i) => _data[startRow][startCol + i] != t).Any();
-    }
-    private bool SearchVertical(int startRow, int startCol, string word)
-    {
-        if (startRow + word.Length > _data.Length) return false;
-        return !word.Where((t, i) => _data[startRow + i][startCol] != t).Any();
-    }
-    private bool SearchDiagonalDownRight(int startRow, int startCol, string word)
-    {
-        if (startRow + word.Length > _data.Length || startCol + word.Length > _data[startRow].Length) return false;
-        return !word.Where((t, i) => _data[startRow + i][startCol + i] != t).Any();
-    }
-    private bool SearchDiagonalDownLeft(int startRow, int startCol, string word)
-    {
-        if (startRow + word.Length > _data.Length || startCol - word.Length < -1) return false;
-        return !word.Where((t, i) => _data[startRow + i][startCol - i] != t).Any();
-    }
-    private bool SearchHorizontalBack(int startRow, int startCol, string word)
-    {
-        if (startCol - word.Length < -1) return false;
-        return !word.Where((t, i) => _data[startRow][startCol - i] != t).Any();
-    }
-    private bool SearchVerticalBack(int startRow, int startCol, string word)
-    {
-        if (startRow - word.Length < -1) return false;
-        return !word.Where((t, i) => _data[startRow - i][startCol] != t).Any();
-    }
-    private bool SearchDiagonalUpLeft(int startRow, int startCol, string word)
-    {
-        if (startRow - word.Length < -1 || startCol - word.Length < -1) return false;
-        return !word.Where((t, i) => _data[startRow - i][startCol - i] != t).Any();
-    }
-    private bool SearchDiagonalUpRight(int startRow, int startCol, string word)
-    {
-        if (startRow - word.Length < -1 || startCol + word.Length > _data[startRow].Length) return false;
-        return !word.Where((t, i) => _data[startRow - i][startCol + i] != t).Any();
-    }
 }
