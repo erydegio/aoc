@@ -30,10 +30,6 @@ defmodule Day5 do
     end
   end
 
-  def sort_lists(lists, orders) do
-    Enum.map(lists, fn list -> sort_list(list, orders) end)
-  end
-
   defp sort_list(list, orders) do
     Enum.sort(list, fn a, b ->
       case {Map.get(orders, a), Map.get(orders, b)} do
