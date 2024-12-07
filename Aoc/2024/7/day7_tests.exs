@@ -17,6 +17,6 @@ use ExUnit.Case
   end
 
   test "part 2 " do
-    assert Day7.run_part2("input.txt") == 6085
+    assert Day7.run_part2("input.txt") == 105517128211543
   end
 end
