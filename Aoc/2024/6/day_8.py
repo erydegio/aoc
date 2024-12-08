@@ -66,3 +66,4 @@ def solve2():
 
 part1 = solve1()
 part2 = solve2()
+print()
