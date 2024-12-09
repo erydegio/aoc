@@ -10,17 +10,15 @@ use ExUnit.Case
 
   @tag timeout: :infinity
   test "part 1 " do
-    assert Day9.run("input.txt") == 3245122495150
+    assert Day9.run("input.txt") == 3245122495150 #very slow
   end
 
-  # test "part 2 - example" do
-  #   assert Day9.run_part2("example.txt") == 11387
-  # end
+  test "part 2 - example" do
+    assert Day9.run_part2("example.txt") == 2858
+  end
 
-  # test "part 2 " do
-  #   assert Day9.run_part2("input.txt") == 105517128211543
-  # end
+  @tag timeout: :infinity
+  test "part 2 " do
+    assert Day9.run_part2("input.txt") == 6636608781232
+  end
 end
-
-#1234
-# type: file, id:0, blocks:1, type: :space, id:1, blocks2,
