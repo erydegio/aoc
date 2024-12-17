@@ -125,7 +125,6 @@ def find_sides(unsorted_areas):
                     sides += 1
 
         visited.add(coords)
-    print(sides)
     return sides
 
 
@@ -156,15 +155,9 @@ def both_neighbours_are_sides_and_not_visited(direction, x, y, visited, edges_in
                     count_not_facing += 1
             return count_not_facing == len(not_facing_same_area)
 
-# Esempio di utilizzo
-area = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (1, 5), (2, 5), (3, 5), (3, 4), (3, 3), (4, 3), (4, 4), (4, 5), (5, 5), (5, 4), (5, 3), (5, 2), (5, 1), (5, 0), (4, 0), (3, 0), (2, 0), (2, 1), (2, 2), (1, 2), (1, 1), (1, 0)]
-sides = find_sides(area)
-print(sides)
-
 
 content = read_file_as_string("example.txt")
 coordinates2 = create_coordinate_dict(content)
 areas = find_continuous_areas(coordinates2)
-print(areas)
 res = part_1(areas)
 res2 = part_2(areas)
