@@ -6,7 +6,7 @@ public class Day11
 {
     public long Part1(int times)
     {
-        var lines = File.ReadAllText("../../../Day10/example.txt").Split(' ').Select(long.Parse).ToList();
+        var lines = File.ReadAllText("../../../Day11/example.txt").Split(' ').Select(long.Parse).ToList();
         
         for (int i = 0; i < times; i++)
             lines = ApplyRules(lines);
@@ -16,7 +16,7 @@ public class Day11
 
     public string Part2(int times)
     {
-        var numbers  = File.ReadAllText("../../../Day10/example.txt").Split(' ');
+        var numbers  = File.ReadAllText("../../../Day11/example.txt").Split(' ');
 
         Dictionary<string, long> stones = new();
         numbers.GroupBy(x => x).ToList().ForEach(x => stones.Add(x.Key, x.Count()));
