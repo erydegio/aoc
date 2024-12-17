@@ -40,4 +40,9 @@ public class Utils
         }
         return points;
     }
+     
+     public static int Module(int number, int min, int max)
+     {
+         int rangeSize = max - min + 1; int mod = (number - min) % rangeSize; if (mod < 0) { mod += rangeSize; } return mod + min; 
+     }
 }

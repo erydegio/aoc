@@ -1,15 +1,13 @@
 def find_continuous_areas(coordinates):
     def search(x, y, visited, group):
         stack = [(x, y)]
-        while stack: # ad un certo punto nn ci sarà + nulla in nessuna direzione
+        while stack:
             cx, cy = stack.pop()
             if (cx, cy) not in visited:
                 visited.add((cx, cy))
                 group.append((cx, cy))
                 for nx, ny in [(cx-1, cy), (cx+1, cy), (cx, cy-1), (cx, cy+1)]:
                     if (nx, ny) in coords and (nx, ny) not in visited:
-                    # il nuovo percorso deve essere tra quelli delle mie cordinateper quella lettera e
-                    # non in visited
                         stack.append((nx, ny))
 
     areas = {}
@@ -42,7 +40,6 @@ def create_coordinate_dict(grid):
 def calculate_perimeter(area):
     perimeter = 0
     for x, y in area:
-        # Controlla i quattro lati di ogni cella
         if (x-1, y) not in area:
             perimeter += 1
         if (x+1, y) not in area:
@@ -54,7 +51,7 @@ def calculate_perimeter(area):
     return perimeter
 
 
-def calculate_areas(coordinate_dict):
+def part_1(coordinate_dict):
     areas = {}
     for letter, groups in coordinate_dict.items():
         acc = 0
@@ -81,9 +78,6 @@ def read_file_as_string(file_path):
     return content
 
 
-
-
-
 def create_edge_dict(area):
     edges = {}
     for x, y in area:
@@ -105,11 +99,10 @@ def create_edge_dict(area):
 
     return edges
 
-def find_sides(areas):
+def find_sides(unsorted_areas):
 
-    # ho le cordinate di un poligono:
+    areas =  sorted(unsorted_areas, key=lambda p: (p[0], p[1]))
     edges_info = create_edge_dict(areas)
-    #aggiorno le info sulle facce (se guardano verso l'esterno  ono)
     for x, y in areas:
         if (x - 1, y) not in areas:
             edges_info[(x,y)]['sx'] = False
@@ -122,12 +115,11 @@ def find_sides(areas):
 
     sides = 0
     visited = set()
-    for coords, edges in edges_info.items(): # scorro le cordinate
+    for coords, edges in edges_info.items():
         x = coords[0]
         y = coords[1]
 
-        for direction ,value in edges.items(): # scorro le direzioni della cordinata
-            # se nei visited ci sono lati vicini che guardano nella stessa direzione a false?
+        for direction ,value in edges.items():
             if value is False:
                 if both_neighbours_are_sides_and_not_visited(direction, x, y, visited, edges_info, areas):
                     sides += 1
@@ -135,7 +127,6 @@ def find_sides(areas):
         visited.add(coords)
     print(sides)
     return sides
-
 
 
 def both_neighbours_are_sides_and_not_visited(direction, x, y, visited, edges_info, area):
@@ -147,7 +138,7 @@ def both_neighbours_are_sides_and_not_visited(direction, x, y, visited, edges_in
     cross_dir1 = cross_directions[direction][0] # (nx,ny)
     cross_dir2 = cross_directions[direction][1]
 
-    not_facing_same_area = []   #devo capire i campi cross direzione quanti sono nell'area:
+    not_facing_same_area = []
     count_not_facing = 0
 
     if cross_dir1 in area and edges_info.get(cross_dir1, False):
@@ -155,15 +146,15 @@ def both_neighbours_are_sides_and_not_visited(direction, x, y, visited, edges_in
     if cross_dir2 in area and edges_info.get(cross_dir2, False):
         if edges_info[cross_dir2][direction] is False: not_facing_same_area.append(cross_dir2)
 
-    if not not_facing_same_area: # se lato singolo
-        if (x, y) not in visited: return True #lo conto solo se non è stato visitato
+    if not not_facing_same_area:
+        if (x, y) not in visited: return True
         else: return False
     else :
        for cross_dir in not_facing_same_area:
             if cross_dir in area:
-                if cross_dir not in visited and edges_info[cross_dir][direction] is False:  # se non è stato visitato ed è pezzo di un lato
+                if cross_dir not in visited and edges_info[cross_dir][direction] is False:
                     count_not_facing += 1
-            return count_not_facing == len(not_facing_same_area) # se entrambi non sono stati contati e sono a false conto
+            return count_not_facing == len(not_facing_same_area)
 
 # Esempio di utilizzo
 area = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (1, 5), (2, 5), (3, 5), (3, 4), (3, 3), (4, 3), (4, 4), (4, 5), (5, 5), (5, 4), (5, 3), (5, 2), (5, 1), (5, 0), (4, 0), (3, 0), (2, 0), (2, 1), (2, 2), (1, 2), (1, 1), (1, 0)]
@@ -172,9 +163,8 @@ print(sides)
 
 
 content = read_file_as_string("example.txt")
-coordinates2 = create_coordinate_dict(content) # dizionario cn tt le cordinate x quella letter
-areas = find_continuous_areas(coordinates2) # trovo spazi continui per quella lettera
+coordinates2 = create_coordinate_dict(content)
+areas = find_continuous_areas(coordinates2)
 print(areas)
-#res = calculate_areas(areas)
-#res2 = part_2(areas)
-#print(res2)
+res = part_1(areas)
+res2 = part_2(areas)
