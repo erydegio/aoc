@@ -1,4 +1,4 @@
-namespace Aoc2024;
+namespace Aoc;
 
 public class Utils
 {
